@@ -1,0 +1,28 @@
+server:
+  port: 8081
+  tomcat:
+    connection-timeout: 60000
+    uri-encoding: UTF-8
+    #最小线程数
+    #最大链接数
+    max-connections: 6500
+    #最大等待队列长度
+    accept-count: 1000
+    #请求头最大长度kb
+    max-http-header-size: 1048576
+    #请请求体最大长度kb
+    threads:
+      min-spare: 500
+      max: 2500
+    max-http-form-post-size: 2097152
+spring:
+  datasource:
+    username: root
+    password: Li1132887706.
+    url: jdbc:mysql://localhost:3306/ytxs?useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC&characterEncoding=utf8&allowPublicKeyRetrieval=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB

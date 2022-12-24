@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>人脸注册</title>
+</head>
+<body>
+<video id="video" src="" autoplay="autoplay" loop="loop" muted="muted"></video>
+<canvas id="canvas" style="border:1px solid #d3d3d3;"></canvas>
+<br />
+<input type="text" id="user_id" placeholder="请输入账号" style="width: 700px; height: 100px; font-size: 40px;"/>
+<div id="support"></div>
+<button id="ok" style="width: 700px;height: 100px; font-size: 40px;">确认</button>
+<div id="msg" style="font-size: 50px;"></div>
+</body>
+<!--<script src="/static/js/register.js"></script>-->
+<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+<script>
+  //判断浏览器是否支持HTML5 Canvas
+  window.onload = function() {
+    try {
+      //动态创建一个canvas元 ，并获取他2Dcontext。如果出现异常则表示不支持
+      document.createElement("canvas").getContext("2d");
+    } catch(e) {
+      document.getElementByIdx("support").innerHTML = "浏览器不支持HTML5 CANVAS";
+    }
+  }
+
+  //这段主要是获取摄像头的视频流并显示在Video 签中
+  window.addEventListener("DOMContentLoaded", function() {
+    var canvas = document.getElementById("canvas"),
+            context = canvas.getContext("2d"),
+            img = document.getElementById("img"),
+            video = document.getElementById("video"),
+            videoObj = {
+              "video": true
+            },
+            errBack = function(error) {
+              console.log("Video capture error: ", error.code);
+              alert("不支持");
+            };
+
+    canvas.width = 450;
+    canvas.height = 600;
+
+    var button = document.getElementById("ok");
+    button.onclick = function(){
+      context.drawImage(video, 0, 0, 450, 600);
+      // 把画布的内容转换为base64编码格式的图片
+      var data = canvas.toDataURL( 'image/png', 1 );  //1表示质量(无损压缩)
+      var user_id = document.getElementById("user_id").value;
+      document.getElementById("msg").innerText = "注册中……";
+
+      $.ajax({
+        url: 'http://127.0.0.1:8081/add',
+        cache:false,
+        type: 'POST',
+        data: {
+          base : data,
+          user_id : user_id
+        },
+        dataType: 'json',
+        success : function(rs){
+          document.getElementById("msg").innerText = rs;
+          setTimeout("javascript:location.href='http://localhost:8081/index'", 2000);
+        },
+        error: function(e){
+          console.log(e);
+        }
+
+      });
+    }
+
+    //请求摄像头权限
+    navigator.mediaDevices.getUserMedia(videoObj)
+            .then(function(stream){
+              //成功回调函数，把流给video标签
+              video.srcObject = stream;
+              video.play();
+            })
+            .catch(errBack);
+
+  }, false);
+</script>
+</html>

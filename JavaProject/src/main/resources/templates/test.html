@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+  <style>
+    .div2{
+    margin-top: 200px;
+    }
+  </style>
+  <style type="text/css">
+    html{height:100%;}
+    body{min-height:100%;margin:0;padding:0;position:relative;}
+    .header{background-color: white;}
+    .main{padding-bottom:100px;background-color: white;}/* main的padding-bottom值要等于或大于footer的height值 */
+    .footer{position:absolute;bottom:0;width:100%;height:150px;background-color: white;}
+  </style>
+</head>
+<body>
+<h1>基于OPENCV制作引体向上识别--HTML+FLASK</h1>
+  <form  action="" enctype="multipart/form-data" method="POST" id="vid">
+    <input type="file" name="file" style="margin-top:20px;"/>
+    <br>
+    <i>请上传待识别文件：</i>
+    <input type="text" class="txt_input" name="name" value=""/>
+    <input onclick="videoSubmit()" type="button" value="上传" class="button-new" style="margin-top:15px;"/>
+  </form>
+
+  <br />
+  <div class="div1" >
+    <input type="button" value="查询所有成绩" onclick="checkSubmit()"/><br />
+    <label>学生成绩：</label><br />
+    <div id="res">
+      <span id=s2></span>
+    </div>
+  </div>
+
+  <div class="div2" >
+    <input type="button" value="查询当前成绩" onclick="checkSubmit2()"/><br />
+    <label>学生成绩：</label><br />
+    <div id="res2">
+      <span id="s1"></span>
+    </div>
+  </div>
+
+  <div style="position: absolute; left:150px; top: 150px">
+  <p><a href="http://localhost:8081/show/">查看检测视频</a></p>
+  </div>
+
+  <div style="white-space: pre; position:absolute;left:5px;top:250px"  id="string"></div>
+  <script type="text/javascript" >
+    function checkSubmit() {
+      $.ajax({
+        type: 'GET',
+        dataType: 'text',
+        url: 'http://localhost:8081/queryData',
+        data: {
+          "user_name": 'tt',
+          "user_num": '123'
+        },
+        contentType: 'application/x-www-form-urlencoded',
+        success(data) {
+          const a = JSON.parse(data);
+          let string = "";
+          a.forEach(function (val, index){
+            string += "序号：" + val.序号 + "  姓名：" + val.姓名 + "  成绩：" + val.成绩 + '\r\n'
+            // $("#s1").html("序号：" + val.序号 + "  姓名：" + val.姓名 + "  成绩：" + val.成绩 + '\r\n');
+            // console.log(string)
+            document.getElementById("string").innerHTML=string
+          })
+          // $("#s1").html(string);
+          // console.log(data);
+          // const data0 = JSON.parse(data);
+          // $("#s1").html(data)
+        }
+      })
+    }
+
+    function checkSubmit2() {
+
+      $.ajax({
+        type: 'GET',
+        dataType: 'text',
+        url: 'http://localhost:8081/queryData',
+        data: {
+          "user_name": 'tt',
+          "user_num": '123'
+        },
+        contentType: 'application/x-www-form-urlencoded',
+        success(data) {
+          const a = JSON.parse(data);
+          let string = "";
+          a.forEach(function (val, index){
+            string += "序号：" + val.序号 + "  姓名：" + val.姓名 + "  成绩：" + val.成绩 + '\r\n'
+            $("#s1").html("序号：" + val.序号 + "  姓名：" + val.姓名 + "  成绩：" + val.成绩 + '\r\n');
+            console.log(string);
+            // document.getElementById("string").innerHTML=string
+          })
+          // $("#s1").html(string);
+          // console.log(data);
+          // const data0 = JSON.parse(data);
+          // $("#s1").html(data)
+        }
+      })
+    }
+
+
+    function videoSubmit() {
+
+      var formt = new FormData($("#vid")[0])
+      $.ajax({
+        type: 'post',
+        // dataType: 'file',
+        url: "http://localhost:8081/uploadVideo", //上传文件的请求路径必须是绝对路劲
+        data: formt,
+        cache: false,
+        processData: false,
+        contentType: false,
+        success:function(res){
+          console.log(res)
+          window.alert("识别成功"+'\n'+'姓名:'+res.user_name+'\n'+'分数:'+res.user_num)
+        }
+      })
+    }
+    // function videoSubmit() {
+    //   $("#vid").on("change", function () {
+    //     var formData = new FormData();
+    //     formData.append("file", $("vid")[0].files[0]);
+    //     $.ajax({
+    //       type: 'POST',
+    //       dataType: 'file',
+    //       url: 'http://localhost:8081/uploadVideo',
+    //       data: formData,
+    //       contentType: 'application/x-www-form-urlencoded',
+    //       processData: false,
+    //       contentType: false,
+    //       success: function (response) {
+    //         alert("123")
+    //       }
+    //     })
+    //   })
+    // }
+  </script>
+  <footer class="footer" style="text-align:center">
+    <p><a href="http://175.178.236.98:5000/">视觉：基于OpenCv制作简易车牌识别</a></p>
+    <p>copyright @2022 电子科技大学中山学院20级计科G班李骏</p>
+    <p>Contact information: <a href="1132887706@QQ.COM">1132887706@QQ.COM</a></p>
+  </footer>
+</body>
+</html>

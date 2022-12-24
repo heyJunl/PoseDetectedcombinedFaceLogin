@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>基于OPENCV制作简易车牌识别--HTML+FLASK</h1>
+    <form action="" enctype="multipart/form-data" method="POST">
+        <input type="file" name="file" style="margin-top:20px;"/>
+        <br>
+        <i>请上传待识别文件：</i>
+        <input type="text" class="txt_input" name="name" value=""/>
+        <input type="submit" value="上传" class="button-new" style="margin-top:15px;"/>
+    </form>
+    <h1>车牌号结果为：{{carNum}}</h1>
+    <h1>车牌颜色为：{{carCol}}</h1>
+    <h1>车牌归属地为：{{carName}}</h1>
+{#    <video src="{{ url_for('static', filename= './images/show.mp4') }}" width="400" height="400" alt="图图呢"></video>#}
+    <object width="500" height="300" data="../static/images/show.mp4"></object>
+    <embed src="../static/images/show.mp4" width="500" height="300">
+    <video controls="" autoplay="" name="media"><source src="../static/images/show.mp4" type="video/mp4"></video>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        html{height:100%;}
+        body{min-height:100%;margin:0;padding:0;position:relative;}
+        .header{background-color: white;}
+        .main{padding-bottom:100px;background-color: white;}/* main的padding-bottom值要等于或大于footer的height值 */
+        .footer{position:absolute;bottom:0;width:100%;height:150px;background-color: white;}
+    </style>
+</head>
+<body>
+
+<div style="text-align:center;">
+    <H1>识别视频展示</H1>
+    <p><a href="http://localhost:8081/index">返回首页</a></p>
+    <p><a href="http://localhost:8081/test">返回检测页</a></p>
+</div>
+<div style="position:absolute; left: 500px; top:200px; align-content: center">
+    <video width="1000" height="600" controls>
+        <source src="/playVideo" type="video/mp4">
+    </video>
+</div>
+<footer class="footer" style="text-align:center">
+    <p><a href="http://175.178.236.98:5000/">视觉：基于OpenCv制作简易车牌识别</a></p>
+    <p>copyright @2022 电子科技大学中山学院20级计科G班李骏</p>
+    <p>Contact information: <a href="1132887706@QQ.COM">1132887706@QQ.COM</a></p>
+</footer>
+</body>
+</html>
